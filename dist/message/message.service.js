@@ -6,18 +6,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserModule = void 0;
+exports.MessageService = void 0;
 const common_1 = require("@nestjs/common");
-const user_service_1 = require("./user.service");
-const user_controller_1 = require("./user.controller");
-const prisma_service_1 = require("../prisma/prisma.service");
-let UserModule = class UserModule {
+let MessageService = class MessageService {
+    create(createMessageDto) {
+        return 'This action adds a new message';
+    }
+    findAll() {
+        return `This action returns all message`;
+    }
+    findOne(id) {
+        return `This action returns a #${id} message`;
+    }
+    update(id, updateMessageDto) {
+        return `This action updates a #${id} message`;
+    }
+    remove(id) {
+        return `This action removes a #${id} message`;
+    }
 };
-UserModule = __decorate([
-    common_1.Module({
-        controllers: [user_controller_1.UserController],
-        providers: [prisma_service_1.PrismaService, user_service_1.UserService],
-    })
-], UserModule);
-exports.UserModule = UserModule;
-//# sourceMappingURL=user.module.js.map
+MessageService = __decorate([
+    common_1.Injectable()
+], MessageService);
+exports.MessageService = MessageService;
+//# sourceMappingURL=message.service.js.map
