@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Doctors {
+  id_medico       String       @id @db.Uuid
+  crm             String       @db.VarChar(255)
+  ur_crm          String       @db.VarChar(255)
+  checked         Boolean      @default(false)
+  sunday_start    DateTime     @db.Date
+  sunday_end      DateTime     @db.Date
+  monday_start    DateTime     @db.Date
+  monay_end       DateTime     @db.Date
+  tuesday_start   DateTime     @db.Date
+  tuesday_end     DateTime     @db.Date
+  wednesday_start DateTime     @db.Date
+  wednesday_end   DateTime     @db.Date
+  thursday_start  DateTime     @db.Date
+  thursday_end    DateTime     @db.Date
+  friday_start    DateTime     @db.Date
+  friday_end      DateTime     @db.Date
+  saturday_start  DateTime     @db.Date
+  saturday_end    DateTime     @db.Date
+  Friendship      Friendship[]
+}
+
+model Friendship {
+  id_friendship String     @id @db.VarChar(255)
+  patient       String     @db.Uuid
+  doctor        String     @db.Uuid
+  created_at    DateTime   @default(now()) @db.Date
+  Doctors       Doctors    @relation(fields: [doctor], references: [id_medico])
+  Users         Users      @relation(fields: [patient], references: [id_user])
+  Messages      Messages[]
+
+  @@unique([patient, doctor], name: "friendship_unique")
+}
+
+model Messages {
+  id_message           String     @id @db.Uuid
+  message              String     @db.VarChar(255)
+  is_seen              Boolean    @default(false)
+  deleted_from_sender  Boolean    @default(false)
+  deleted_from_reciver Boolean    @default(false)
+  id_sender            String     @db.Uuid
+  id_frendship         String     @db.VarChar(255)
+  created_at           DateTime   @default(now()) @db.Date
+  Friendship           Friendship @relation(fields: [id_frendship], references: [id_friendship])
+  Users                Users      @relation(fields: [id_sender], references: [id_user])
+}
+
+model Users {
+  id_user    String       @id @db.Uuid
+  name       String       @db.VarChar(255)
+  email      String       @unique @db.VarChar(255)
+  birthday   DateTime     @db.Date
+  gender     String       @db.Char(255)
+  doctor     Boolean      @default(false)
+  password   String       @db.VarChar(255)
+  active     Boolean      @default(true)
+  photo      String?      @db.VarChar(255)
+  prefix     String?      @db.VarChar(255)
+  created_at DateTime     @default(now()) @db.Date
+  Friendship Friendship[]
+  Messages   Messages[]
+}
